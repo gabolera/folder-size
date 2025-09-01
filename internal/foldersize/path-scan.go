@@ -13,7 +13,7 @@ type PathScanService struct {
 	isAnalyzing     bool
 }
 
-func New() *PathScanService {
+func NewProcessScan() *PathScanService {
 	return &PathScanService{
 		isAnalyzing: false,
 		currentAnalysis: &FolderAnalysis{

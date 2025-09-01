@@ -3,6 +3,9 @@ package main
 import (
 	"context"
 	"fmt"
+	"folder-size/internal/foldersize"
+
+	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 // App struct
@@ -41,4 +44,22 @@ func (a *App) shutdown(ctx context.Context) {
 // Greet returns a greeting for the given name
 func (a *App) Greet(name string) string {
 	return fmt.Sprintf("Hello %s, It's show time!", name)
+}
+
+func (a *App) SelectFolder() string {
+	path, err := runtime.OpenDirectoryDialog(a.ctx, runtime.OpenDialogOptions{
+		Title: "Selecionar Pasta",
+	})
+	if err != nil {
+		return ""
+	}
+	return path
+}
+
+func (a *App) ScanFolder(path string) []foldersize.ItemInfo {
+	pss := foldersize.NewProcessScan()
+	pss.ScanPath(path)
+	pss.OrderByHeavyItem()
+
+	return pss.Items()
 }
