@@ -1,15 +1,21 @@
-import { Button } from "@/components/ui/button"
-import React from "react"
+import SelectInitialFolder from "./pages/select-initial-folder/select-initial-folder"
+import { If } from "./components/if"
+import usePathStore from "./stores/path.store"
+import { Scanner } from "./pages/scanner/scanner"
 
 function App() {
-  const [count, setCount] = React.useState(0)
+  // const [count, setCount] = React.useState(0)
+  const pathStore = usePathStore()
+  const hasPath = pathStore.path.length > 0
 
   return (
-    <div className="min-h-screen bg-white grid place-items-center mx-auto py-8">
-      <div className="text-blue-900 text-2xl font-bold flex flex-col items-center space-y-4">
-        <h1>Vite + React + TS + Tailwind + shadcn/ui</h1>
-        <Button onClick={() => setCount(count + 1)}>Count up ({count})</Button>
-      </div>
+    <div className="min-h-screen bg-white">
+        <If condition={!hasPath}>
+          <SelectInitialFolder/>
+        </If>
+        <If condition={hasPath}>
+          <Scanner />
+        </If>        
     </div>
   )
 }
